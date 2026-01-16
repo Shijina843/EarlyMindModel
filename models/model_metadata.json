@@ -1,0 +1,19 @@
+{
+  "train_accuracy": 0.95125,
+  "test_accuracy": 0.95,
+  "roc_auc": 0.9678871548619448,
+  "features": [
+    "avg_word_time_ms",
+    "reading_speed_wpm",
+    "word_error_rate",
+    "pause_count",
+    "self_correction_count",
+    "phoneme_accuracy",
+    "confusable_error_rate",
+    "reaction_time_ms",
+    "skipped_trials",
+    "repeated_attempts"
+  ],
+  "n_samples_train": 800,
+  "n_samples_test": 200
+}
