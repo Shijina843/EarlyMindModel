@@ -1,0 +1,6 @@
+avg_word_time_ms,reading_speed_wpm,word_error_rate,pause_count,self_correction_count,reaction_time_ms,phoneme_accuracy,confusable_error_rate,skipped_trials,repeated_attempts,typed_word,target_word,pred_class,pred_prob,label
+1383.1708431243896,43.37858934653971,0.0,0,0,0,0.95,0.05,0,0,apple,apple,0,0.0038511281491927936,Low Risk
+4426.94616317749,13.553361118115411,0.1666666666666666,0,0,0,0.95,0.05,0,0,banna,banana,1,0.5297835703694674,High Risk
+2981.95743560791,20.12101154883461,0.0,0,0,0,0.95,0.05,0,0,orange,orange,0,0.028655264424409483,Low Risk
+902.263641357422,66.49941020535,0.0,0,0,0,0.95,0.05,0,0,grape,grape,0,0.0020538474892761492,Low Risk
+2963.9360904693604,20.24335146528027,0.3333333333333333,0,0,0,0.95,0.05,0,0,ineabble,pineapple,1,0.5250157329442405,High Risk
