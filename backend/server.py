@@ -12,6 +12,10 @@ from test1.baseline import BASELINE_PAIRS
 from test1.logic import analyze_responses
 from test1.generator import generate_pair
 
+from test2.baseline import BASELINE_PAIRS as BASELINE_PAIRS_2
+from test2.logic import analyze_responses as analyze_responses_2
+from test2.generator import generate_pair as generate_pair_2
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
@@ -139,6 +143,69 @@ def next_trial():
     }
     
     return jsonify(result)
+
+@app.route('/test2/baseline', methods=['GET'])
+def test2_baseline():
+    """
+    Returns all baseline pairs for Test 2.
+    Response format: JSON list of pairs (text-only).
+    """
+    pairs = []
+    # We copy info from BASELINE_PAIRS_2
+    for p in BASELINE_PAIRS_2:
+        pair = p.copy()
+        # Shuffle options
+        import random
+        options = list(pair["options"])
+        random.shuffle(options)
+        pair["options"] = options
+        
+        # Re-calc correct index
+        if pair["audio"] in options:
+            pair["correct_index"] = options.index(pair["audio"])
+            
+        # Structure for client
+        pairs.append({
+            "text_word": pair["audio"], 
+            "options": pair["options"],
+            "correct_index": pair["correct_index"]
+        })
+    
+    # Shuffle the pairs order? Or keep order? 
+    # Test 1 shuffled pairs. Let's shuffle pairs.
+    import random
+    random.shuffle(pairs)
+    
+    return jsonify(pairs)
+
+@app.route('/test2/adaptive', methods=['POST'])
+def test2_adaptive():
+    """
+    Generates ONE adaptive trial for Test 2 based on history.
+    Response format: JSON object (text-only).
+    """
+    data = request.json
+    responses = data.get('responses', []) if data else []
+    
+    analysis = analyze_responses_2(responses)
+    prompt_hints = analysis["prompt_hints"]
+    
+    # Exclude words already used
+    exclude = set()
+    for r in responses:
+         word = r.get("text_word", r.get("audio"))
+         if word:
+             exclude.add(word)
+    
+    # Generate new pair
+    pair = generate_pair_2(prompt_hints, exclude_words=list(exclude))
+    
+    return jsonify({
+        "text_word": pair["audio_word"], 
+        "options": pair["options"],
+        "correct_index": pair["correct_index"],
+        "analysis": analysis["assessment"]
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
